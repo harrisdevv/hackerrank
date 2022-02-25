@@ -171,25 +171,73 @@ class Result {
         return res.toString();
     }
 
+    public static int superDigit(String n, int k) {
+        StringBuilder curNum = new StringBuilder(n);
+        boolean first = true;
+        long sum;
+        while (curNum.length() > 1) {
+            sum = 0;
+            for (int i = 0; i < curNum.length(); i++) {
+                sum += curNum.charAt(i) - '0';
+            }
+            if (first) {
+                sum *= k;
+                first = false;
+            }
+            curNum = new StringBuilder(String.valueOf(sum));
+        }
+        return Integer.parseInt(curNum.toString());
+    }
+
+    public static void minimumBribes(List<Integer> q) {
+        int bribes = 0;
+        for (int i = q.size() - 1; i >= 0; i--) {
+            int expected_val = i + 1;
+            if (q.get(i) == expected_val) {
+                // fit
+            }
+            else if (i >= 1 && q.get(i - 1) == expected_val) {
+                bribes++;
+                int temp = q.get(i);
+                q.set(i, q.get(i - 1));
+                q.set(i - 1, temp);
+            } else if (i >= 2 && q.get(i - 2) == expected_val) {
+                bribes += 2;
+                // may be i do swap 2 times for easy to think :D
+                q.set(i - 2, q.get(i - 1));
+                q.set(i - 1, q.get(i));
+                q.set(i, i);
+            } else {
+                System.out.println("Too chaotic");
+                return;
+            }
+        }
+        System.out.println(bribes);
+    }
+
 }
 
 public class Solution {
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
 
-        int n = Integer.parseInt(bufferedReader.readLine().trim());
+        int t = Integer.parseInt(bufferedReader.readLine().trim());
 
-        String s = bufferedReader.readLine();
+        for (int tItr = 0; tItr < t; tItr++) {
+            int n = Integer.parseInt(bufferedReader.readLine().trim());
 
-        int k = Integer.parseInt(bufferedReader.readLine().trim());
+            String[] qTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
 
-        String result = Result.caesarCipher(s, k);
+            List<Integer> q = new ArrayList<>();
 
-        bufferedWriter.write(result);
-        bufferedWriter.newLine();
+            for (int i = 0; i < n; i++) {
+                int qItem = Integer.parseInt(qTemp[i]);
+                q.add(qItem);
+            }
+
+            Result.minimumBribes(q);
+        }
 
         bufferedReader.close();
-        bufferedWriter.close();
     }
 }
