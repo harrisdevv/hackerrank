@@ -264,7 +264,6 @@ class Result {
 
     static SinglyLinkedListNode mergeLists(SinglyLinkedListNode head1, SinglyLinkedListNode head2) {
         SinglyLinkedList root = new SinglyLinkedList();
-
         SinglyLinkedListNode nodeHead1 = head1;
         SinglyLinkedListNode nodeHead2 = head2;
         while (nodeHead1 != null && nodeHead2 != null) {
@@ -287,50 +286,103 @@ class Result {
         }
         return root.head;
     }
+
+    public static void dequeDS() {
+        Scanner scanner = new Scanner(System.in);
+        Deque<Integer> deque
+            = new LinkedList<Integer>();
+  
+        int nTestcase = scanner.nextInt();
+        for (int i = 0; i < nTestcase; i++) {
+            int option = scanner.nextInt();
+            if (option == 1) {
+                int val = scanner.nextInt();
+                deque.add(val);
+            }
+            else if(option == 2) {
+                deque.removeFirst();
+            }
+            else if(option == 3) {
+                System.out.println(deque.getFirst());
+            }
+        }
+    }
+
+    public static String isBalanced(String s) {
+        Stack<Character> charStack = new Stack<>(); 
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(' || c == '{' || c == '[') {
+                charStack.add(c);
+            }
+            else if (c == ')') {
+                if (charStack.isEmpty()) return "NO";
+                else {
+                    char popc = charStack.pop();
+                    if (popc != '(') {
+                        return "NO";
+                    } 
+                }
+            }
+            else if (c == '}') {
+                if (charStack.isEmpty()) return "NO";
+                else {
+                    char popc = charStack.pop();
+                    if (popc != '{') {
+                        return "NO";
+                    } 
+                }
+            }
+            else if (c == ']') {
+                if (charStack.isEmpty()) return "NO";
+                else {
+                    char popc = charStack.pop();
+                    if (popc != '[') {
+                        return "NO";
+                    } 
+                }
+            }
+        }
+        return charStack.isEmpty() ? "YES": "NO";
+    }
+
+//https://www.hackerrank.com/challenges/one-week-preparation-kit-simple-text-editor/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=preparation-kits&playlist_slugs%5B%5D=one-week-preparation-kit&playlist_slugs%5B%5D=one-week-day-six
+    public static void simpleTextEditor() {
+        Scanner scanner = new Scanner(System.in);
+        Stack<String> prevState = new Stack<String>();
+        int nTest = scanner.nextInt();
+        StringBuilder str = new StringBuilder();
+        prevState.add("");
+        for (int i = 0; i < nTest; i++) {
+            int option = scanner.nextInt();
+            if (option == 1) {
+                prevState.add(str.toString());
+                str.append(scanner.next());
+            }
+            else if(option == 2) {
+                int k = scanner.nextInt();
+                prevState.add(str.toString());
+                str.setLength(str.length() - k);
+            }
+            else if (option == 3) {
+                int k = scanner.nextInt();
+                System.out.println(str.charAt(k - 1));
+            }
+            else if(option == 4) {
+                str = new StringBuilder(prevState.pop());
+            }
+            else {
+                // unknown, but problem say it can't occur
+            }
+            System.out.println("debug: " + str.toString());
+        }
+    }
 }
 
 public class Solution {
-    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
-
-        int tests = scanner.nextInt();
-        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-
-        for (int testsItr = 0; testsItr < tests; testsItr++) {
-            SinglyLinkedList llist1 = new SinglyLinkedList();
-
-            int llist1Count = scanner.nextInt();
-            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-
-            for (int i = 0; i < llist1Count; i++) {
-                int llist1Item = scanner.nextInt();
-                scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-
-                llist1.insertNode(llist1Item);
-            }
-          
-          	SinglyLinkedList llist2 = new SinglyLinkedList();
-
-            int llist2Count = scanner.nextInt();
-            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-
-            for (int i = 0; i < llist2Count; i++) {
-                int llist2Item = scanner.nextInt();
-                scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-
-                llist2.insertNode(llist2Item);
-            }
-
-            SinglyLinkedListNode llist3 = Result.mergeLists(llist1.head, llist2.head);
-
-            Result.printSinglyLinkedList(llist3, " ", bufferedWriter);
-            bufferedWriter.newLine();
-        }
-
-        bufferedWriter.close();
-
-        scanner.close();
+        Result.simpleTextEditor();
     }
+
 }
