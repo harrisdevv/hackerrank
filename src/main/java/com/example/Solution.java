@@ -349,7 +349,7 @@ class Result {
 //https://www.hackerrank.com/challenges/one-week-preparation-kit-simple-text-editor/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=preparation-kits&playlist_slugs%5B%5D=one-week-preparation-kit&playlist_slugs%5B%5D=one-week-day-six
     public static void simpleTextEditor() {
         Scanner scanner = new Scanner(System.in);
-        Stack<Operator> prevOperator = new Stack<Operator>();
+        Stack<String> prevOperator = new Stack<String>();
         int nTest = scanner.nextInt();
         // StringBuilder str = new StringBuilder();
         String str = "";
@@ -358,14 +358,14 @@ class Result {
             if (option == 1) {
                 String val = scanner.next();
                 // prevOperator.add(new Operator(option,val ));
-                prevOperator.add(new Operator(option, str));
+                prevOperator.push( str);
                 // str.append(val);
                 str += val;
             }
             else if(option == 2) {
                 int k = scanner.nextInt();
                 // prevOperator.add(new Operator(option, str.substring(str.length() - k, str.length())));
-                prevOperator.add(new Operator(option, str));
+                prevOperator.push( str);
                 str = str.substring(0, str.length() - k);
             }
             else if (option == 3) {
@@ -373,26 +373,56 @@ class Result {
                 System.out.println(str.charAt(k - 1));
             }
             else if(option == 4) {
-                // Operator po = prevOperator.pop();
-                // if (po.option == 1) {
-                //     str.setLength(str.length() - po.value.length());
-                // }
-                // else if (po.option == 2) {
-                //     str.append(po.value);
-                // }
-                str = prevOperator.pop().value;
+                str = prevOperator.pop();
             }
             else {
                 // unknown, but problem say it can't occur
             }
         }
+        scanner.close();
     }
+
+    public static int cookies(int k, List<Integer> A) {
+    // Write your code here
+
+    }
+
+    public static int legoBlocks(int n, int m) {
+    // Write your code here
+
+    }
+
+    
 }
 
 public class Solution {
 
     public static void main(String[] args) throws IOException {
-        Result.simpleTextEditor();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
+
+        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        int n = Integer.parseInt(firstMultipleInput[0]);
+
+        int k = Integer.parseInt(firstMultipleInput[1]);
+
+        String[] ATemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        List<Integer> A = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            int AItem = Integer.parseInt(ATemp[i]);
+            A.add(AItem);
+        }
+
+        int result = Result.cookies(k, A);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
     }
 
 }
