@@ -349,32 +349,42 @@ class Result {
 //https://www.hackerrank.com/challenges/one-week-preparation-kit-simple-text-editor/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=preparation-kits&playlist_slugs%5B%5D=one-week-preparation-kit&playlist_slugs%5B%5D=one-week-day-six
     public static void simpleTextEditor() {
         Scanner scanner = new Scanner(System.in);
-        Stack<String> prevState = new Stack<String>();
+        Stack<Operator> prevOperator = new Stack<Operator>();
         int nTest = scanner.nextInt();
-        StringBuilder str = new StringBuilder();
-        prevState.add("");
+        // StringBuilder str = new StringBuilder();
+        String str = "";
         for (int i = 0; i < nTest; i++) {
             int option = scanner.nextInt();
             if (option == 1) {
-                prevState.add(str.toString());
-                str.append(scanner.next());
+                String val = scanner.next();
+                // prevOperator.add(new Operator(option,val ));
+                prevOperator.add(new Operator(option, str));
+                // str.append(val);
+                str += val;
             }
             else if(option == 2) {
                 int k = scanner.nextInt();
-                prevState.add(str.toString());
-                str.setLength(str.length() - k);
+                // prevOperator.add(new Operator(option, str.substring(str.length() - k, str.length())));
+                prevOperator.add(new Operator(option, str));
+                str = str.substring(0, str.length() - k);
             }
             else if (option == 3) {
                 int k = scanner.nextInt();
                 System.out.println(str.charAt(k - 1));
             }
             else if(option == 4) {
-                str = new StringBuilder(prevState.pop());
+                // Operator po = prevOperator.pop();
+                // if (po.option == 1) {
+                //     str.setLength(str.length() - po.value.length());
+                // }
+                // else if (po.option == 2) {
+                //     str.append(po.value);
+                // }
+                str = prevOperator.pop().value;
             }
             else {
                 // unknown, but problem say it can't occur
             }
-            System.out.println("debug: " + str.toString());
         }
     }
 }
