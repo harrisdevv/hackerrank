@@ -270,8 +270,7 @@ class Result {
             if (nodeHead1.data < nodeHead2.data) {
                 root.insertNode(nodeHead1.data);
                 nodeHead1 = nodeHead1.next;
-            }
-            else {
+            } else {
                 root.insertNode(nodeHead2.data);
                 nodeHead2 = nodeHead2.next;
             }
@@ -289,64 +288,61 @@ class Result {
 
     public static void dequeDS() {
         Scanner scanner = new Scanner(System.in);
-        Deque<Integer> deque
-            = new LinkedList<Integer>();
-  
+        Deque<Integer> deque = new LinkedList<Integer>();
+
         int nTestcase = scanner.nextInt();
         for (int i = 0; i < nTestcase; i++) {
             int option = scanner.nextInt();
             if (option == 1) {
                 int val = scanner.nextInt();
                 deque.add(val);
-            }
-            else if(option == 2) {
+            } else if (option == 2) {
                 deque.removeFirst();
-            }
-            else if(option == 3) {
+            } else if (option == 3) {
                 System.out.println(deque.getFirst());
             }
         }
     }
 
     public static String isBalanced(String s) {
-        Stack<Character> charStack = new Stack<>(); 
+        Stack<Character> charStack = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c == '(' || c == '{' || c == '[') {
                 charStack.add(c);
-            }
-            else if (c == ')') {
-                if (charStack.isEmpty()) return "NO";
+            } else if (c == ')') {
+                if (charStack.isEmpty())
+                    return "NO";
                 else {
                     char popc = charStack.pop();
                     if (popc != '(') {
                         return "NO";
-                    } 
+                    }
                 }
-            }
-            else if (c == '}') {
-                if (charStack.isEmpty()) return "NO";
+            } else if (c == '}') {
+                if (charStack.isEmpty())
+                    return "NO";
                 else {
                     char popc = charStack.pop();
                     if (popc != '{') {
                         return "NO";
-                    } 
+                    }
                 }
-            }
-            else if (c == ']') {
-                if (charStack.isEmpty()) return "NO";
+            } else if (c == ']') {
+                if (charStack.isEmpty())
+                    return "NO";
                 else {
                     char popc = charStack.pop();
                     if (popc != '[') {
                         return "NO";
-                    } 
+                    }
                 }
             }
         }
-        return charStack.isEmpty() ? "YES": "NO";
+        return charStack.isEmpty() ? "YES" : "NO";
     }
 
-//https://www.hackerrank.com/challenges/one-week-preparation-kit-simple-text-editor/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=preparation-kits&playlist_slugs%5B%5D=one-week-preparation-kit&playlist_slugs%5B%5D=one-week-day-six
+    // https://www.hackerrank.com/challenges/one-week-preparation-kit-simple-text-editor/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=preparation-kits&playlist_slugs%5B%5D=one-week-preparation-kit&playlist_slugs%5B%5D=one-week-day-six
     public static void simpleTextEditor() {
         Scanner scanner = new Scanner(System.in);
         Stack<String> prevOperator = new Stack<String>();
@@ -358,24 +354,21 @@ class Result {
             if (option == 1) {
                 String val = scanner.next();
                 // prevOperator.add(new Operator(option,val ));
-                prevOperator.push( str);
+                prevOperator.push(str);
                 // str.append(val);
                 str += val;
-            }
-            else if(option == 2) {
+            } else if (option == 2) {
                 int k = scanner.nextInt();
-                // prevOperator.add(new Operator(option, str.substring(str.length() - k, str.length())));
-                prevOperator.push( str);
+                // prevOperator.add(new Operator(option, str.substring(str.length() - k,
+                // str.length())));
+                prevOperator.push(str);
                 str = str.substring(0, str.length() - k);
-            }
-            else if (option == 3) {
+            } else if (option == 3) {
                 int k = scanner.nextInt();
                 System.out.println(str.charAt(k - 1));
-            }
-            else if(option == 4) {
+            } else if (option == 4) {
                 str = prevOperator.pop();
-            }
-            else {
+            } else {
                 // unknown, but problem say it can't occur
             }
         }
@@ -391,8 +384,7 @@ class Result {
             int mid = (left + right) / 2;
             if (arr.get(mid) > val) {
                 right = mid - 1;
-            }
-            else {
+            } else {
                 left = mid;
             }
         }
@@ -408,14 +400,12 @@ class Result {
             int mid = (left + right) / 2;
             if (arr.get(mid) > val) {
                 right = mid - 1;
-            }
-            else {
+            } else {
                 left = mid;
             }
         }
         return left;
     }
-
 
     public static int cookies(int k, List<Integer> A) {
         Collections.sort(A);
@@ -440,20 +430,19 @@ class Result {
                 A.add(addIndex + 1, sweetness);
                 // boolean added = false;
                 // for (int j = 0; j <= greaterThanSweetnessIdx; j++) {
-                //     if (A.get(j) >= sweetness) {
-                //         A.add(j + 1, sweetness);
-                //         added = true;
-                //         break;
-                //     }
+                // if (A.get(j) >= sweetness) {
+                // A.add(j + 1, sweetness);
+                // added = true;
+                // break;
+                // }
                 // }
                 // if (!added) {
-                //     A.add(greaterThanSweetnessIdx + 1, sweetness);
+                // A.add(greaterThanSweetnessIdx + 1, sweetness);
                 // }
-                greaterThanSweetnessIdx += 1; 
+                greaterThanSweetnessIdx += 1;
                 numIteration++;
-            }
-            else {
-                numIteration+= (int) Math.ceil((double) (greaterThanSweetnessIdx + 1) / 2);
+            } else {
+                numIteration += (int) Math.ceil((double) (greaterThanSweetnessIdx + 1) / 2);
                 break;
             }
         }
@@ -461,13 +450,25 @@ class Result {
     }
 
     public static int legoBlocks(int n, int m) {
-    // Write your code here
-    // https://stackoverflow.com/questions/15424945/lego-blocks-dynamic-programming 
-    // hard :D 
+        // Write your code here
+        // https://stackoverflow.com/questions/15424945/lego-blocks-dynamic-programming
+        // hard :D
         return -1;
     }
 
-    
+    class Node {
+        int data;
+        Node left;
+        Node right;
+    }
+
+    public static void preOrder(Node root) {
+        if (root != null) {
+            System.out.print(root.data + " ");
+            preOrder(root.left);
+            preOrder(root.right);
+        }
+    }
 }
 
 public class Solution {
