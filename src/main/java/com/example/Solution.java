@@ -382,14 +382,89 @@ class Result {
         scanner.close();
     }
 
-    public static int cookies(int k, List<Integer> A) {
-    // Write your code here
+    public static int findBiggerElem(int val, List<Integer> arr) {
+        int left = 0, right = arr.size() - 1;
+        if (arr.get(arr.size() - 1) <= val) {
+            return arr.size() - 1;
+        }
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (arr.get(mid) > val) {
+                right = mid - 1;
+            }
+            else {
+                left = mid;
+            }
+        }
+        return left;
+    }
 
+    public static int findBiggerElem(int val, List<Integer> arr, int from, int end) {
+        int left = from, right = end;
+        if (arr.get(end) <= val) {
+            return end;
+        }
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (arr.get(mid) > val) {
+                right = mid - 1;
+            }
+            else {
+                left = mid;
+            }
+        }
+        return left;
+    }
+
+
+    public static int cookies(int k, List<Integer> A) {
+        Collections.sort(A);
+        int numIteration = 0;
+        int greaterThanSweetnessIdx = A.size() - 1;
+        for (int i = 0; i < A.size(); i++) {
+            if (A.get(i) >= k) {
+                greaterThanSweetnessIdx = i - 1;
+                break;
+            }
+        }
+        if (greaterThanSweetnessIdx == -1) {
+            return 0;
+        }
+        while (greaterThanSweetnessIdx >= 0) {
+            int sweetness = A.get(0) + A.get(1) * 2;
+            if (sweetness < k) {
+                A.remove(0);
+                A.remove(0);
+                greaterThanSweetnessIdx -= 2;
+                int addIndex = findBiggerElem(sweetness, A, 0, greaterThanSweetnessIdx);
+                A.add(addIndex + 1, sweetness);
+                // boolean added = false;
+                // for (int j = 0; j <= greaterThanSweetnessIdx; j++) {
+                //     if (A.get(j) >= sweetness) {
+                //         A.add(j + 1, sweetness);
+                //         added = true;
+                //         break;
+                //     }
+                // }
+                // if (!added) {
+                //     A.add(greaterThanSweetnessIdx + 1, sweetness);
+                // }
+                greaterThanSweetnessIdx += 1; 
+                numIteration++;
+            }
+            else {
+                numIteration+= (int) Math.ceil((double) (greaterThanSweetnessIdx + 1) / 2);
+                break;
+            }
+        }
+        return numIteration;
     }
 
     public static int legoBlocks(int n, int m) {
     // Write your code here
-
+    // https://stackoverflow.com/questions/15424945/lego-blocks-dynamic-programming 
+    // hard :D 
+        return -1;
     }
 
     
@@ -398,6 +473,10 @@ class Result {
 public class Solution {
 
     public static void main(String[] args) throws IOException {
+        // legoReadInput();
+
+        int res = Result.findBiggerElem(3, Arrays.asList(1, 2, 4, 5));
+        System.out.println("res " + res);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
 
@@ -420,6 +499,29 @@ public class Solution {
 
         bufferedWriter.write(String.valueOf(result));
         bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+
+    private static void legoReadInput() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
+
+        int t = Integer.parseInt(bufferedReader.readLine().trim());
+
+        for (int tItr = 0; tItr < t; tItr++) {
+            String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            int n = Integer.parseInt(firstMultipleInput[0]);
+
+            int m = Integer.parseInt(firstMultipleInput[1]);
+
+            int result = Result.legoBlocks(n, m);
+
+            bufferedWriter.write(String.valueOf(result));
+            bufferedWriter.newLine();
+        }
 
         bufferedReader.close();
         bufferedWriter.close();
