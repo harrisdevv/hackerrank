@@ -8,6 +8,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.*;
 
+import com.example.Result.HuffmanLeaf;
+import com.example.Result.HuffmanNode;
+import com.example.Result.Node;
 import com.example.Result.SinglyLinkedList;
 import com.example.Result.SinglyLinkedListNode;
 
@@ -456,11 +459,44 @@ class Result {
         return -1;
     }
 
-    class Node {
-        int data;
-        Node left;
-        Node right;
+    abstract class Node implements Comparable<Node> {
+
+        public int frequency; // the frequency of this tree
+        public char data;
+        public Node left, right;
+
+        public Node(int freq) {
+            frequency = freq;
+        }
+
+        // compares on the frequency
+        public int compareTo(Node tree) {
+            return frequency - tree.frequency;
+        }
     }
+
+    class HuffmanLeaf extends Node {
+
+        public HuffmanLeaf(int freq, char val) {
+            super(freq);
+            data = val;
+        }
+    }
+
+    class HuffmanNode extends Node {
+
+        public HuffmanNode(Node l, Node r) {
+            super(l.frequency + r.frequency);
+            left = l;
+            right = r;
+        }
+    }
+
+    // class Node {
+    // int data;
+    // Node left;
+    // Node right;
+    // }
 
     public static void preOrder(Node root) {
         if (root != null) {
@@ -469,13 +505,165 @@ class Result {
             preOrder(root.right);
         }
     }
+
+    public void decode(String s, Node root) {
+        int ind = 0;
+        while (ind < s.length()) {
+            Node node = root;
+            while (node.left != null || node.right != null) {
+                if (s.charAt(ind) == '0') {
+                    if (node.left != null)
+                        node = node.left;
+                } else {
+                    if (node.right != null)
+                        node = node.right;
+                }
+                ind++;
+            }
+            System.out.print(node.data);
+        }
+    }
+public static void noPrefix(List<String> words) {
+    // Write your code here
+        // Write your code here
+        boolean isPrefix = true;
+        for (int i = 0; i < words.size(); i++) {
+            for (int j = 0; j < words.size() && i != j; j++) {
+                // check j is prefix of i
+                if (words.get(j).length() >= words.get(i).length()) {
+                    continue;
+                }
+                int indi = 0;
+                int indj = 0;
+                isPrefix = true;
+                while (indi < words.get(i).length() && indj < words.get(j).length()) {
+                    if (words.get(i).charAt(indi) != words.get(j).charAt(indj)) {
+                        isPrefix = false;
+                        break;
+                    }
+                    indi++;
+                    indj++;
+                }
+                if (isPrefix) {
+                    System.out.println("BAD SET\n" + words.get(i));
+                    return;
+                }
+            }
+        }
+        System.out.println("GOOD SET");
+    }
+
 }
 
 public class Solution {
 
+    // public static Node buildTree(int[] charFreqs) {
+
+    //     PriorityQueue<Node> trees = new PriorityQueue<Node>();
+    //     // initially, we have a forest of leaves
+    //     // one for each non-empty character
+    //     for (int i = 0; i < charFreqs.length; i++)
+    //         if (charFreqs[i] > 0)
+    //             trees.offer(new HuffmanLeaf(charFreqs[i], (char) i));
+
+    //     assert trees.size() > 0;
+    //     // loop until there is only one tree left
+    //     while (trees.size() > 1) {
+    //         // two trees with least frequency
+    //         Node a = trees.poll();
+    //         Node b = trees.poll();
+
+    //         // put into new node and re-insert into queue
+    //         trees.offer(new HuffmanNode(a, b));
+    //     }
+    //     return trees.poll();
+    // }
+
+    public static Map<Character, String> mapA = new HashMap<Character, String>();
+
+    public static void printCodes(Node tree, StringBuffer prefix) {
+        assert tree != null;
+
+        if (tree instanceof HuffmanLeaf) {
+            HuffmanLeaf leaf = (HuffmanLeaf) tree;
+
+            // print out character, frequency, and code for this leaf (which is just the
+            // prefix)
+            // System.out.println(leaf.data + "\t" + leaf.frequency + "\t" + prefix);
+            mapA.put(leaf.data, prefix.toString());
+
+        } else if (tree instanceof HuffmanNode) {
+            HuffmanNode node = (HuffmanNode) tree;
+
+            // traverse left
+            prefix.append('0');
+            printCodes(node.left, prefix);
+            prefix.deleteCharAt(prefix.length() - 1);
+
+            // traverse right
+            prefix.append('1');
+            printCodes(node.right, prefix);
+            prefix.deleteCharAt(prefix.length() - 1);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         // legoReadInput();
+        // cookiesInput();
 
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<String> words = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String wordsItem = bufferedReader.readLine();
+            words.add(wordsItem);
+        }
+
+        Result.noPrefix(words);
+
+        bufferedReader.close();
+
+
+        // Test Decode D7()####################
+        // Scanner input = new Scanner(System.in);
+
+        // String test = input.next();
+
+        // // we will assume that all our characters will have
+        // // code less than 256, for simplicity
+        // int[] charFreqs = new int[256];
+
+        // // read each character and record the frequencies
+        // for (char c : test.toCharArray())
+        //     charFreqs[c]++;
+
+        // // build tree
+        // Node tree = buildTree(charFreqs);
+
+        // // print out results
+        // printCodes(tree, new StringBuffer());
+        // StringBuffer s = new StringBuffer();
+
+        // for (int i = 0; i < test.length(); i++) {
+
+        //     char c = test.charAt(i);
+        //     s.append(mapA.get(c));
+
+        // }
+
+        // // System.out.println(s);
+        // Result res = new Result();
+        // res.decode(s.toString(), tree);
+    }
+
+    private static Node buildTree(int[] charFreqs) {
+        return null;
+    }
+
+    private static void cookiesInput() throws IOException {
         int res = Result.findBiggerElem(3, Arrays.asList(1, 2, 4, 5));
         System.out.println("res " + res);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
