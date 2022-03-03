@@ -88,6 +88,61 @@ class Result2 {
         }
         return nway;
     }
+public static int sockMerchant(int n, List<Integer> ar) {
+        int[] freq = new int[101];
+        for (int i = 0; i < ar.size(); i++) {
+            freq[ar.get(i)]++;
+        }
+
+        int sum = 0;
+        for (int i = 0; i < 101; i++) {
+            sum += freq[i] / 2;
+        }
+        return sum;
+    }
+    public static int pageCount(int n, int p) {
+        int lefttoright = p / 2;
+        int righttoleft = (n % 2 == 1) ? (n - p) / 2: (n - p + 1) / 2;
+        return (lefttoright < righttoleft) ? lefttoright: righttoleft;
+    }
+
+    public static int maxMin(int k, List<Integer> arr) {
+        Collections.sort(arr);
+        int unfairpoint = arr.get(k - 1) - arr.get(0);
+        for (int i = k; i < arr.size(); i++) {
+            if (unfairpoint > arr.get(i) - arr.get(i - k + 1)) {
+                unfairpoint = arr.get(i) - arr.get(i - k + 1);
+            }
+        }
+        return unfairpoint;
+
+    }
+
+      public static List<Integer> dynamicArray(int n, List<List<Integer>> queries) {
+    // Write your code here
+        List<ArrayList<Integer>> arr = new ArrayList<ArrayList<Integer>>();
+        List<Integer> res = new ArrayList<Integer>();
+        for (int i = 0; i < n; i++) {
+            arr.add(new ArrayList<Integer>());
+        }
+        int lastAnswer = 0;
+        for (int i = 0; i < queries.size(); i++) {
+            int opt = queries.get(i).get(0);
+            int x = queries.get(i).get(1);
+            int y = queries.get(i).get(2);
+            if (opt == 1) {
+                int idx = (x ^ lastAnswer) % n;
+                arr.get(idx).add(y);
+            }
+            else if (opt == 2) {
+                int idx = (x^lastAnswer)% n;
+                lastAnswer = arr.get(idx).get((y % arr.get(idx).size()));
+                res.add(lastAnswer);
+            }
+        }
+        return res;
+    }
+
 
 }
 
@@ -96,29 +151,43 @@ public class MonthHackerrank {
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
-        int n = Integer.parseInt(bufferedReader.readLine().trim());
 
-        String[] sTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
-
-        List<Integer> s = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            int sItem = Integer.parseInt(sTemp[i]);
-            s.add(sItem);
-        }
 
         String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
 
-        int d = Integer.parseInt(firstMultipleInput[0]);
+        int n = Integer.parseInt(firstMultipleInput[0]);
 
-        int m = Integer.parseInt(firstMultipleInput[1]);
+        int q = Integer.parseInt(firstMultipleInput[1]);
 
-        int result = Result2.birthday(s, d, m);
+        List<List<Integer>> queries = new ArrayList<>();
 
-        bufferedWriter.write(String.valueOf(result));
+        for (int i = 0; i < q; i++) {
+            String[] queriesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            List<Integer> queriesRowItems = new ArrayList<>();
+
+            for (int j = 0; j < 3; j++) {
+                int queriesItem = Integer.parseInt(queriesRowTempItems[j]);
+                queriesRowItems.add(queriesItem);
+            }
+
+            queries.add(queriesRowItems);
+        }
+
+        List<Integer> result = Result2.dynamicArray(n, queries);
+
+        for (int i = 0; i < result.size(); i++) {
+            bufferedWriter.write(String.valueOf(result.get(i)));
+
+            if (i != result.size() - 1) {
+                bufferedWriter.write("\n");
+            }
+        }
+
         bufferedWriter.newLine();
 
         bufferedReader.close();
-        bufferedWriter.close();
+        bufferedWriter.close(); 
+
     }
 }
