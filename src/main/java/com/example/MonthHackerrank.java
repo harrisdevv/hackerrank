@@ -119,7 +119,6 @@ public static int sockMerchant(int n, List<Integer> ar) {
     }
 
       public static List<Integer> dynamicArray(int n, List<List<Integer>> queries) {
-    // Write your code here
         List<ArrayList<Integer>> arr = new ArrayList<ArrayList<Integer>>();
         List<Integer> res = new ArrayList<Integer>();
         for (int i = 0; i < n; i++) {
@@ -162,6 +161,20 @@ public class MonthHackerrank {
         List<List<Integer>> queries = new ArrayList<>();
 
         for (int i = 0; i < q; i++) {
+            String[] queriesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            List<Integer> queriesRowItems = new ArrayList<>();
+
+            for (int j = 0; j < 3; j++) {
+                int queriesItem = Integer.parseInt(queriesRowTempItems[j]);
+                queriesRowItems.add(queriesItem);
+            }
+
+            queries.add(queriesRowItems);
+        }
+
+        for (int i = 0; i < q - 2; i++) {
+            // String[] queriesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
             String[] queriesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
 
             List<Integer> queriesRowItems = new ArrayList<>();
