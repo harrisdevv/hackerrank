@@ -70,7 +70,7 @@ class Result2 {
     }
 
     public static int birthday(List<Integer> s, int d, int m) {
-        if (m > s.size()) 
+        if (m > s.size())
             return -1;
         int sum = 0;
         for (int i = 0; i < m; i++) {
@@ -88,7 +88,8 @@ class Result2 {
         }
         return nway;
     }
-public static int sockMerchant(int n, List<Integer> ar) {
+
+    public static int sockMerchant(int n, List<Integer> ar) {
         int[] freq = new int[101];
         for (int i = 0; i < ar.size(); i++) {
             freq[ar.get(i)]++;
@@ -100,10 +101,11 @@ public static int sockMerchant(int n, List<Integer> ar) {
         }
         return sum;
     }
+
     public static int pageCount(int n, int p) {
         int lefttoright = p / 2;
-        int righttoleft = (n % 2 == 1) ? (n - p) / 2: (n - p + 1) / 2;
-        return (lefttoright < righttoleft) ? lefttoright: righttoleft;
+        int righttoleft = (n % 2 == 1) ? (n - p) / 2 : (n - p + 1) / 2;
+        return (lefttoright < righttoleft) ? lefttoright : righttoleft;
     }
 
     public static int maxMin(int k, List<Integer> arr) {
@@ -118,7 +120,7 @@ public static int sockMerchant(int n, List<Integer> ar) {
 
     }
 
-      public static List<Integer> dynamicArray(int n, List<List<Integer>> queries) {
+    public static List<Integer> dynamicArray(int n, List<List<Integer>> queries) {
         List<ArrayList<Integer>> arr = new ArrayList<ArrayList<Integer>>();
         List<Integer> res = new ArrayList<Integer>();
         for (int i = 0; i < n; i++) {
@@ -132,9 +134,8 @@ public static int sockMerchant(int n, List<Integer> ar) {
             if (opt == 1) {
                 int idx = (x ^ lastAnswer) % n;
                 arr.get(idx).add(y);
-            }
-            else if (opt == 2) {
-                int idx = (x^lastAnswer)% n;
+            } else if (opt == 2) {
+                int idx = (x ^ lastAnswer) % n;
                 lastAnswer = arr.get(idx).get((y % arr.get(idx).size()));
                 res.add(lastAnswer);
             }
@@ -142,6 +143,87 @@ public static int sockMerchant(int n, List<Integer> ar) {
         return res;
     }
 
+    public static int month[];
+
+    public static void updateLeapYear(int year) {
+        if (year % 400 == 0) {
+            month[2] = 29;
+        } else if (year % 100 == 0) {
+            month[2] = 28;
+        } else if (year % 4 == 0) {
+            month[2] = 29;
+        } else {
+            month[2] = 28;
+        }
+    }
+
+    public static void storeMonth() {
+        month[1] = 31;
+        month[2] = 28;
+        month[3] = 31;
+        month[4] = 30;
+        month[5] = 31;
+        month[6] = 30;
+        month[7] = 31;
+        month[8] = 31;
+        month[9] = 30;
+        month[10] = 31;
+        month[11] = 30;
+        month[12] = 31;
+    }
+
+    public static int findPrimeDates(int d1, int m1, int y1, int d2, int m2, int y2) {
+        storeMonth();
+
+        int result = 0;
+
+        while (true) {
+            int x = d1;
+            x = x * 100 + m1;
+            x = x * 10000 + y1;
+            if (x % 4 == 0 || x % 7 == 0) {
+                result = result + 1;
+            }
+            if (d1 == d2 && m1 == m2 && y1 == y2) {
+                break;
+            }
+            updateLeapYear(y1);
+            d1 = d1 + 1;
+            if (d1 > month[m1]) {
+                m1 = m1 + 1;
+                d1 = 1;
+                if (m1 > 12) {
+                    y1 = y1 + 1;
+                    m1 = 1;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static String balancedSums(List<Integer> arr) {
+        long leftSum = 0;
+        long rightSum = 0;
+        // if (arr.size() < 3) {
+        // return "NO";
+        // }
+        for (int i = 0; i < arr.size(); i++) {
+            rightSum += arr.get(i);
+        }
+        rightSum -= arr.get(0);
+        if (leftSum == rightSum) {
+            return "YES";
+        }
+
+        for (int i = 1; i < arr.size(); i++) {
+            leftSum += arr.get(i - 1);
+            rightSum -= arr.get(i);
+            if (leftSum == rightSum) {
+                return "YES";
+            }
+        }
+        return "NO";
+    }
 
 }
 
@@ -151,56 +233,28 @@ public class MonthHackerrank {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
 
+        int T = Integer.parseInt(bufferedReader.readLine().trim());
 
-        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+        for (int TItr = 0; TItr < T; TItr++) {
+            int n = Integer.parseInt(bufferedReader.readLine().trim());
 
-        int n = Integer.parseInt(firstMultipleInput[0]);
+            String[] arrTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
 
-        int q = Integer.parseInt(firstMultipleInput[1]);
+            List<Integer> arr = new ArrayList<>();
 
-        List<List<Integer>> queries = new ArrayList<>();
-
-        for (int i = 0; i < q; i++) {
-            String[] queriesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
-
-            List<Integer> queriesRowItems = new ArrayList<>();
-
-            for (int j = 0; j < 3; j++) {
-                int queriesItem = Integer.parseInt(queriesRowTempItems[j]);
-                queriesRowItems.add(queriesItem);
+            for (int i = 0; i < n; i++) {
+                int arrItem = Integer.parseInt(arrTemp[i]);
+                arr.add(arrItem);
             }
 
-            queries.add(queriesRowItems);
+            String result = Result2.balancedSums(arr);
+
+            bufferedWriter.write(result);
+            bufferedWriter.newLine();
         }
-
-        for (int i = 0; i < q - 2; i++) {
-            // String[] queriesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
-            String[] queriesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
-
-            List<Integer> queriesRowItems = new ArrayList<>();
-
-            for (int j = 0; j < 3; j++) {
-                int queriesItem = Integer.parseInt(queriesRowTempItems[j]);
-                queriesRowItems.add(queriesItem);
-            }
-
-            queries.add(queriesRowItems);
-        }
-
-        List<Integer> result = Result2.dynamicArray(n, queries);
-
-        for (int i = 0; i < result.size(); i++) {
-            bufferedWriter.write(String.valueOf(result.get(i)));
-
-            if (i != result.size() - 1) {
-                bufferedWriter.write("\n");
-            }
-        }
-
-        bufferedWriter.newLine();
 
         bufferedReader.close();
-        bufferedWriter.close(); 
+        bufferedWriter.close();
 
     }
 }

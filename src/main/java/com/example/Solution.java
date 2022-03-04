@@ -220,6 +220,32 @@ class Result {
         System.out.println(bribes);
     }
 
+    public static String gridChallenge(List<String> grid) {
+               List<String> rowSortedGrid = new ArrayList<>();
+        for (int i = 0; i < grid.size(); i++) {
+            char charArray[] = grid.get(i).toCharArray();
+            Arrays.sort(charArray);
+            String sortedStr = new String(charArray);
+            rowSortedGrid.add(sortedStr);
+        }
+        for (int i = 0; i < rowSortedGrid.size(); i++) {
+            String row = rowSortedGrid.get(i);
+            for (int j = 0; j < row.length() - 1; j++) {
+                if (row.charAt(j) > row.charAt(j + 1)) {
+                    return "NO";
+                }
+            }
+            if (i < rowSortedGrid.size() - 1) {
+                for (int j = 0; j < row.length(); j++) {
+                    if (rowSortedGrid.get(i).charAt(j) > rowSortedGrid.get(i + 1).charAt(j)) {
+                        return "NO";
+                    }
+                }
+            }
+        }
+        return "YES";
+    }
+
     static class SinglyLinkedListNode {
         public int data;
         public SinglyLinkedListNode next;
