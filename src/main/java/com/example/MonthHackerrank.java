@@ -225,6 +225,26 @@ class Result2 {
         return "NO";
     }
 
+    public static String counterGame(long n) {
+    // Write your code here
+        boolean louiseTurn = true;
+        long curNum = n;
+        while (curNum != 1) {
+            if ((curNum & (curNum - 1)) == 0) {
+                curNum = curNum /2;
+            }else {
+                int nearExpo2Num = 1;
+                while (nearExpo2Num * 2 < curNum) {
+                    nearExpo2Num *= 2;
+                }
+                curNum -= nearExpo2Num;
+            }
+            louiseTurn = !louiseTurn;
+        }
+        if (!louiseTurn) return "Louise";
+        else
+            return "Richard";
+    }
 }
 
 public class MonthHackerrank {
