@@ -281,12 +281,20 @@ class Result2 {
                 frequent.add(new ItemFrequent(freq[i], 1));
             }
         }
+        if (frequent.size() == 1) {
+            return "YES";
+        }
         if (frequent.size() > 2) {
             return "NO";
         }
-        if ((int)Math.abs(frequent.get(0).val - frequent.get(1).val) <= 1 
-        && (frequent.get(0).freq == 1 || frequent.get(1).freq == 1)) {
-            return "YES";   
+        if (frequent.get(0).val - 1 == frequent.get(1).val && frequent.get(0).freq == 1) {
+            return "YES";
+        }
+        if (frequent.get(1).val - 1 == frequent.get(0).val && frequent.get(1).freq == 1) {
+            return "YES";
+        }
+        if ((frequent.get(0).freq == 1 && frequent.get(0).val == 1)|| (frequent.get(1).freq == 1 && frequent.get(1).val == 1)) {
+            return "YES";
         }
         return "NO";
     }
