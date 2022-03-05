@@ -240,7 +240,58 @@ class Result2 {
         else
             return "Richard";
     }
+
+    //https://www.xarg.org/puzzle/hackerrank/sum-vs-xor/
+    public static long sumXor(long n) {
+        int nZeroBit = 0;
+        while (n != 0) {
+            if ((n & 1) != 1) nZeroBit++;
+            n = n >> 1;
+        }
+        return 1L << nZeroBit;
+    }
+
+    public static class ItemFrequent {
+        public int val;
+        public int freq;
+        ItemFrequent(int val, int freq) {
+            this.val = val;
+            this.freq = freq;
+        }
+    }
+    public static String isValid(String s) {
+        int maxChar = 26;
+        
+        int[] freq = new int[maxChar];
+        for (int i = 0; i < s.length(); i++) {
+            freq[s.charAt(i) - 'a']++;
+        }
+        
+        List<ItemFrequent> frequent = new ArrayList<>(); 
+        for (int i = 0; i < maxChar; i++) {
+            if (freq[i] == 0) continue;
+            boolean appear = false;
+            for (int j = 0; j < frequent.size(); j++) {
+                if (frequent.get(j).val == freq[i]) {
+                    appear = true;
+                    frequent.get(j).freq += 1;
+                }
+            }
+            if (!appear) {
+                frequent.add(new ItemFrequent(freq[i], 1));
+            }
+        }
+        if (frequent.size() > 2) {
+            return "NO";
+        }
+        if ((int)Math.abs(frequent.get(0).val - frequent.get(1).val) <= 1 
+        && (frequent.get(0).freq == 1 || frequent.get(1).freq == 1)) {
+            return "YES";   
+        }
+        return "NO";
+    }
 }
+
 
 public class MonthHackerrank {
 
@@ -248,28 +299,14 @@ public class MonthHackerrank {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
 
-        int T = Integer.parseInt(bufferedReader.readLine().trim());
+        String s = bufferedReader.readLine();
 
-        for (int TItr = 0; TItr < T; TItr++) {
-            int n = Integer.parseInt(bufferedReader.readLine().trim());
+        String result = Result2.isValid(s);
 
-            String[] arrTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
-
-            List<Integer> arr = new ArrayList<>();
-
-            for (int i = 0; i < n; i++) {
-                int arrItem = Integer.parseInt(arrTemp[i]);
-                arr.add(arrItem);
-            }
-
-            String result = Result2.balancedSums(arr);
-
-            bufferedWriter.write(result);
-            bufferedWriter.newLine();
-        }
+        bufferedWriter.write(result);
+        bufferedWriter.newLine();
 
         bufferedReader.close();
         bufferedWriter.close();
-
     }
 }
