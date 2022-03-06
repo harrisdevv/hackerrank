@@ -2,10 +2,12 @@ package com.example;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -298,23 +300,141 @@ class Result2 {
         }
         return "NO";
     }
+    
+    public static List<Integer> climbingLeaderboard(List<Integer> ranked, List<Integer> player) {
+        int curRank;
+        List<Integer> res = new ArrayList<Integer>();
+        List<Integer>rankedUnDup = new ArrayList<Integer>();
+        for (int i = 0; i < ranked.size(); i++) {
+            if ((rankedUnDup.size() == 0) || (rankedUnDup.size() > 0 && rankedUnDup.get(rankedUnDup.size() - 1) != ranked.get(i))) {
+                rankedUnDup.add(ranked.get(i));
+            }
+        }
+        System.out.println(Arrays.toString(rankedUnDup.toArray()));
+        for (int i = 0; i < player.size(); i++) {
+            curRank = 1;
+            for (int j = 0; j < rankedUnDup.size(); j++) {
+                //if (j - 1 >= 0 && ranked.get(j) == ranked.get(j - 1)) {
+                  //  continue;
+                //}
+                if (player.get(i) < rankedUnDup.get(j)) {
+                    curRank++;
+                }
+                else {
+                    break;
+                }
+
+            }
+            res.add(curRank);
+        }
+        return res;
+    }
+
+
+
+    static class SinglyLinkedListNode {
+        public int data;
+        public SinglyLinkedListNode next;
+
+        public SinglyLinkedListNode(int nodeData) {
+            this.data = nodeData;
+            this.next = null;
+        }
+    }
+
+    static class SinglyLinkedList {
+        public SinglyLinkedListNode head;
+        public SinglyLinkedListNode tail;
+
+        public SinglyLinkedList() {
+            this.head = null;
+            this.tail = null;
+        }
+
+        public void insertNode(int nodeData) {
+            SinglyLinkedListNode node = new SinglyLinkedListNode(nodeData);
+
+            if (this.head == null) {
+                this.head = node;
+            } else {
+                this.tail.next = node;
+            }
+
+            this.tail = node;
+        }
+    }
+
+    public static void printSinglyLinkedList(SinglyLinkedListNode node, String sep, BufferedWriter bufferedWriter) throws IOException {
+        while (node != null) {
+            bufferedWriter.write(String.valueOf(node.data));
+
+            node = node.next;
+
+            if (node != null) {
+                bufferedWriter.write(sep);
+            }
+        }
+    }
+
+    public static SinglyLinkedListNode reverse(SinglyLinkedListNode llist) {
+    // Write your code here
+        if (llist == null) {
+            return null;
+        }
+        if (llist.next == null) {
+            return llist;
+        }
+        SinglyLinkedListNode nextNode = reverse(llist.next);
+        nextNode.next = llist;
+        return llist;
+    }
+
 }
 
 
 public class MonthHackerrank {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        // BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("input.txt"));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
 
-        String s = bufferedReader.readLine();
+        int rankedCount = Integer.parseInt(bufferedReader.readLine().trim());
 
-        String result = Result2.isValid(s);
+        String[] rankedTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
 
-        bufferedWriter.write(result);
+        List<Integer> ranked = new ArrayList<>();
+
+        for (int i = 0; i < rankedCount; i++) {
+            int rankedItem = Integer.parseInt(rankedTemp[i]);
+            ranked.add(rankedItem);
+        }
+
+        int playerCount = Integer.parseInt(bufferedReader.readLine().trim());
+
+        String[] playerTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        List<Integer> player = new ArrayList<>();
+
+        for (int i = 0; i < playerCount; i++) {
+            int playerItem = Integer.parseInt(playerTemp[i]);
+            player.add(playerItem);
+        }
+
+        List<Integer> result = Result2.climbingLeaderboard(ranked, player);
+
+        for (int i = 0; i < result.size(); i++) {
+            bufferedWriter.write(String.valueOf(result.get(i)));
+
+            if (i != result.size() - 1) {
+                bufferedWriter.write("\n");
+            }
+        }
+
         bufferedWriter.newLine();
 
         bufferedReader.close();
         bufferedWriter.close();
+
     }
 }
