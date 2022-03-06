@@ -389,6 +389,46 @@ class Result2 {
         return llist;
     }
 
+
+    public static SinglyLinkedListNode insertNodeAtPosition(SinglyLinkedListNode llist, int data, int position) {
+    // Write your code here
+        int iterPos = 0;
+        SinglyLinkedListNode iter = llist;
+        if (position == 0) {
+            SinglyLinkedListNode newData = new SinglyLinkedListNode(data);
+            newData.next = llist;
+            return newData;
+        }
+        while (iter!=null) {
+            if (iterPos == position - 1) {
+                SinglyLinkedListNode newData = new SinglyLinkedListNode(data);
+                newData.next = iter.next;
+                iter.next = newData;
+            }
+            iter = iter.next;
+            iterPos++;
+        }
+        return llist;
+    }
+
+    public static List<Integer> icecreamParlor(int m, List<Integer> arr) {
+        List<Integer> res = new ArrayList<Integer>();
+        boolean found = false;
+        for (int i = 0; i < arr.size(); i++) {
+            for (int j = 0; j < arr.size() && j != i; j++) {
+                if (arr.get(i) + arr.get(j) == m) {
+                    res.add(j + 1);
+                    res.add(i + 1);
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+        return res;
+    }
+
+
 }
 
 
