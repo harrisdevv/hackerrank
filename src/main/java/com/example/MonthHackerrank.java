@@ -2,7 +2,6 @@ package com.example;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 class Result2 {
 
@@ -228,26 +231,28 @@ class Result2 {
     }
 
     public static int countBits(long n) {
-        int count = 0 ;
-        while(n != 0) {
-            n &= (n-1) ;
+        int count = 0;
+        while (n != 0) {
+            n &= (n - 1);
             count++;
         }
-        return count ;
+        return count;
     }
 
     public static String counterGame(long n) {
-    // Write your code here
-        if (countBits(n - 1) % 2 == 1) return "Louise";
+        // Write your code here
+        if (countBits(n - 1) % 2 == 1)
+            return "Louise";
         else
             return "Richard";
     }
 
-    //https://www.xarg.org/puzzle/hackerrank/sum-vs-xor/
+    // https://www.xarg.org/puzzle/hackerrank/sum-vs-xor/
     public static long sumXor(long n) {
         int nZeroBit = 0;
         while (n != 0) {
-            if ((n & 1) != 1) nZeroBit++;
+            if ((n & 1) != 1)
+                nZeroBit++;
             n = n >> 1;
         }
         return 1L << nZeroBit;
@@ -256,22 +261,25 @@ class Result2 {
     public static class ItemFrequent {
         public int val;
         public int freq;
+
         ItemFrequent(int val, int freq) {
             this.val = val;
             this.freq = freq;
         }
     }
+
     public static String isValid(String s) {
         int maxChar = 26;
-        
+
         int[] freq = new int[maxChar];
         for (int i = 0; i < s.length(); i++) {
             freq[s.charAt(i) - 'a']++;
         }
-        
-        List<ItemFrequent> frequent = new ArrayList<>(); 
+
+        List<ItemFrequent> frequent = new ArrayList<>();
         for (int i = 0; i < maxChar; i++) {
-            if (freq[i] == 0) continue;
+            if (freq[i] == 0)
+                continue;
             boolean appear = false;
             for (int j = 0; j < frequent.size(); j++) {
                 if (frequent.get(j).val == freq[i]) {
@@ -295,18 +303,20 @@ class Result2 {
         if (frequent.get(1).val - 1 == frequent.get(0).val && frequent.get(1).freq == 1) {
             return "YES";
         }
-        if ((frequent.get(0).freq == 1 && frequent.get(0).val == 1)|| (frequent.get(1).freq == 1 && frequent.get(1).val == 1)) {
+        if ((frequent.get(0).freq == 1 && frequent.get(0).val == 1)
+                || (frequent.get(1).freq == 1 && frequent.get(1).val == 1)) {
             return "YES";
         }
         return "NO";
     }
-    
+
     public static List<Integer> climbingLeaderboard(List<Integer> ranked, List<Integer> player) {
         int curRank;
         List<Integer> res = new ArrayList<Integer>();
-        List<Integer>rankedUnDup = new ArrayList<Integer>();
+        List<Integer> rankedUnDup = new ArrayList<Integer>();
         for (int i = 0; i < ranked.size(); i++) {
-            if ((rankedUnDup.size() == 0) || (rankedUnDup.size() > 0 && rankedUnDup.get(rankedUnDup.size() - 1) != ranked.get(i))) {
+            if ((rankedUnDup.size() == 0)
+                    || (rankedUnDup.size() > 0 && rankedUnDup.get(rankedUnDup.size() - 1) != ranked.get(i))) {
                 rankedUnDup.add(ranked.get(i));
             }
         }
@@ -314,13 +324,12 @@ class Result2 {
         for (int i = 0; i < player.size(); i++) {
             curRank = 1;
             for (int j = 0; j < rankedUnDup.size(); j++) {
-                //if (j - 1 >= 0 && ranked.get(j) == ranked.get(j - 1)) {
-                  //  continue;
-                //}
+                // if (j - 1 >= 0 && ranked.get(j) == ranked.get(j - 1)) {
+                // continue;
+                // }
                 if (player.get(i) < rankedUnDup.get(j)) {
                     curRank++;
-                }
-                else {
+                } else {
                     break;
                 }
 
@@ -329,8 +338,6 @@ class Result2 {
         }
         return res;
     }
-
-
 
     static class SinglyLinkedListNode {
         public int data;
@@ -364,7 +371,8 @@ class Result2 {
         }
     }
 
-    public static void printSinglyLinkedList(SinglyLinkedListNode node, String sep, BufferedWriter bufferedWriter) throws IOException {
+    public static void printSinglyLinkedList(SinglyLinkedListNode node, String sep, BufferedWriter bufferedWriter)
+            throws IOException {
         while (node != null) {
             bufferedWriter.write(String.valueOf(node.data));
 
@@ -377,7 +385,7 @@ class Result2 {
     }
 
     public static SinglyLinkedListNode reverse(SinglyLinkedListNode llist) {
-    // Write your code here
+        // Write your code here
         if (llist == null) {
             return null;
         }
@@ -389,9 +397,8 @@ class Result2 {
         return llist;
     }
 
-
     public static SinglyLinkedListNode insertNodeAtPosition(SinglyLinkedListNode llist, int data, int position) {
-    // Write your code here
+        // Write your code here
         int iterPos = 0;
         SinglyLinkedListNode iter = llist;
         if (position == 0) {
@@ -399,7 +406,7 @@ class Result2 {
             newData.next = llist;
             return newData;
         }
-        while (iter!=null) {
+        while (iter != null) {
             if (iterPos == position - 1) {
                 SinglyLinkedListNode newData = new SinglyLinkedListNode(data);
                 newData.next = iter.next;
@@ -423,58 +430,120 @@ class Result2 {
                     break;
                 }
             }
-            if (found) break;
+            if (found)
+                break;
         }
         return res;
     }
 
+    public static List<Integer> waiter(List<Integer> number, int q) {
+        return null;
+    }
 
+    public static int getSum(List<Integer> list) {
+        int sum = 0;
+        for (int i = 0; i < list.size(); i++) {
+            sum += list.get(i);
+        }
+        return sum;
+    }
+
+    public static int equalStacks(List<Integer> h1, List<Integer> h2, List<Integer> h3) {
+        int h1s = getSum(h1);
+        int h2s = getSum(h2);
+        int h3s = getSum(h3);
+        while (true) {
+            if (h1.size() == 0 || h2.size() == 0 || h3.size() == 0) {
+                return 0;
+            }
+            if (h1s == h2s && h2s == h3s) {
+                return h1s;
+            }
+            int[] sum = new int[3];
+            sum[0] = h1s;
+            sum[1] = h2s;
+            sum[2] = h3s;
+            int max = Integer.MIN_VALUE;
+            int maxIdx = -1;
+            for (int i = 0; i < 3; i++) {
+                if (max < sum[i]) {
+                    max = sum[i];
+                    maxIdx = i;
+                }
+            }
+            if (maxIdx == 0) {
+                int rem = h1.get(0);
+                h1.remove(0);
+                h1s -= rem;
+            } else if (maxIdx == 1) {
+                int rem = h2.get(0);
+                h2.remove(0);
+                h2s -= rem;
+            }
+            if (maxIdx == 2) {
+                int rem = h3.get(0);
+                h3.remove(0);
+                h3s -= rem;
+            }
+        }
+    }
+
+    //https://www.hackerrank.com/challenges/one-month-preparation-kit-maxsubarray/problem?h_l=interview&isFullScreen=true&playlist_slugs%5B%5D%5B%5D=preparation-kits&playlist_slugs%5B%5D%5B%5D=one-month-preparation-kit&playlist_slugs%5B%5D%5B%5D=one-month-week-four&h_r=next-challenge&h_v=zen
+    public static List<Integer> maxSubarray(List<Integer> arr) {
+
+        List<Integer> result = new ArrayList<Integer>();
+
+        // skip negative part
+        int posIdx = 0;
+        while (arr.get(posIdx) < 0) {
+            posIdx++;
+        }
+
+
+        for (int i = posIdx; i < arr.size(); i++) {
+            // if ()
+
+
+        }
+        return result;
+
+    }
 }
-
 
 public class MonthHackerrank {
 
     public static void main(String[] args) throws IOException {
-        // BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("input.txt"));
+        // BufferedReader bufferedReader = new BufferedReader(new
+        // InputStreamReader(System.in));
+        // BufferedReader bufferedReader = new BufferedReader(new FileReader("input.txt"));
+        // BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
+
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
+        int t = Integer.parseInt(bufferedReader.readLine().trim());
 
-        int rankedCount = Integer.parseInt(bufferedReader.readLine().trim());
+        IntStream.range(0, t).forEach(tItr -> {
+            try {
+                int n = Integer.parseInt(bufferedReader.readLine().trim());
 
-        String[] rankedTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+                List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                    .map(Integer::parseInt)
+                    .collect(toList());
 
-        List<Integer> ranked = new ArrayList<>();
+                List<Integer> result = Result2.maxSubarray(arr);
 
-        for (int i = 0; i < rankedCount; i++) {
-            int rankedItem = Integer.parseInt(rankedTemp[i]);
-            ranked.add(rankedItem);
-        }
-
-        int playerCount = Integer.parseInt(bufferedReader.readLine().trim());
-
-        String[] playerTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
-
-        List<Integer> player = new ArrayList<>();
-
-        for (int i = 0; i < playerCount; i++) {
-            int playerItem = Integer.parseInt(playerTemp[i]);
-            player.add(playerItem);
-        }
-
-        List<Integer> result = Result2.climbingLeaderboard(ranked, player);
-
-        for (int i = 0; i < result.size(); i++) {
-            bufferedWriter.write(String.valueOf(result.get(i)));
-
-            if (i != result.size() - 1) {
-                bufferedWriter.write("\n");
+                bufferedWriter.write(
+                    result.stream()
+                        .map(Object::toString)
+                        .collect(joining(" "))
+                    + "\n"
+                );
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
-        }
-
-        bufferedWriter.newLine();
+        });
 
         bufferedReader.close();
         bufferedWriter.close();
-
     }
 }

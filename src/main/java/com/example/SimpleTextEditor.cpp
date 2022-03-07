@@ -1,7 +1,3 @@
-/*
- *  Author: Arpit Bhayani
- *  https://arpitbhayani.me
- */
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
