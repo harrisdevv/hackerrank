@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
 class Result2 {
 
@@ -436,7 +434,11 @@ class Result2 {
         return res;
     }
 
+    // https://www.hackerrank.com/challenges/one-month-preparation-kit-waiter/problem?h_l=interview&isFullScreen=true&playlist_slugs%5B%5D%5B%5D=preparation-kits&playlist_slugs%5B%5D%5B%5D=one-month-preparation-kit&playlist_slugs%5B%5D%5B%5D=one-month-week-three
     public static List<Integer> waiter(List<Integer> number, int q) {
+        ;
+        // prime erathones
+        // iterate, iterate
         return null;
     }
 
@@ -488,7 +490,7 @@ class Result2 {
         }
     }
 
-    //https://www.hackerrank.com/challenges/one-month-preparation-kit-maxsubarray/problem?h_l=interview&isFullScreen=true&playlist_slugs%5B%5D%5B%5D=preparation-kits&playlist_slugs%5B%5D%5B%5D=one-month-preparation-kit&playlist_slugs%5B%5D%5B%5D=one-month-week-four&h_r=next-challenge&h_v=zen
+    // https://www.hackerrank.com/challenges/one-month-preparation-kit-maxsubarray/problem?h_l=interview&isFullScreen=true&playlist_slugs%5B%5D%5B%5D=preparation-kits&playlist_slugs%5B%5D%5B%5D=one-month-preparation-kit&playlist_slugs%5B%5D%5B%5D=one-month-week-four&h_r=next-challenge&h_v=zen
     public static List<Integer> maxSubarray(List<Integer> arr) {
 
         List<Integer> result = new ArrayList<Integer>();
@@ -499,10 +501,8 @@ class Result2 {
             posIdx++;
         }
 
-
         for (int i = posIdx; i < arr.size(); i++) {
             // if ()
-
 
         }
         return result;
@@ -515,35 +515,30 @@ public class MonthHackerrank {
     public static void main(String[] args) throws IOException {
         // BufferedReader bufferedReader = new BufferedReader(new
         // InputStreamReader(System.in));
-        // BufferedReader bufferedReader = new BufferedReader(new FileReader("input.txt"));
-        // BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
+        // BufferedReader bufferedReader = new BufferedReader(new
+        // FileReader("input.txt"));
+        // BufferedWriter bufferedWriter = new BufferedWriter(new
+        // FileWriter("test.txt"));
 
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
-        int t = Integer.parseInt(bufferedReader.readLine().trim());
 
-        IntStream.range(0, t).forEach(tItr -> {
-            try {
-                int n = Integer.parseInt(bufferedReader.readLine().trim());
-
-                List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-                    .map(Integer::parseInt)
-                    .collect(toList());
-
-                List<Integer> result = Result2.maxSubarray(arr);
-
-                bufferedWriter.write(
-                    result.stream()
-                        .map(Object::toString)
-                        .collect(joining(" "))
-                    + "\n"
-                );
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+        PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
+        try (Scanner scan = new Scanner(System.in)) {
+            int q = scan.nextInt();
+            for (int i = 0; i < q; i++) {
+                int opt = scan.nextInt();
+                if (opt == 1) {
+                    int val = scan.nextInt();
+                    minHeap.add(val);
+                } else if (opt == 2) {
+                    int val = scan.nextInt();
+                    minHeap.remove(val);
+                } else if (opt == 3) {
+                    System.out.println(minHeap.peek());
+                }
             }
-        });
+        }
 
-        bufferedReader.close();
-        bufferedWriter.close();
     }
 }
