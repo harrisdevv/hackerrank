@@ -436,6 +436,25 @@ class Result {
         return left;
     }
 
+    // need to rewrite input reader too !
+    public static int cookiesVer2(int k, List<Integer> A) {
+    	PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
+    	for (Integer val : A) {
+    		if (val < k)
+    			minHeap.offer(val);
+		}
+    	
+    	int nIter= 0;
+    	while (!minHeap.isEmpty()) {
+    		int smallest = minHeap.poll();
+    		int secondSmallest = minHeap.poll();
+    		nIter++;
+    		int newVal = smallest + 2 * secondSmallest;
+    		if (newVal < k)
+    			minHeap.add(newVal);
+    	}
+    	return nIter;
+    }
     public static int cookies(int k, List<Integer> A) {
         Collections.sort(A);
         int numIteration = 0;
@@ -635,22 +654,22 @@ public class Solution {
 
     public static void main(String[] args) throws IOException {
         // legoReadInput();
-        // cookiesInput();
+         cookiesInput();
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-        int n = Integer.parseInt(bufferedReader.readLine().trim());
-
-        List<String> words = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            String wordsItem = bufferedReader.readLine();
-            words.add(wordsItem);
-        }
-
-        Result.noPrefix(words);
-
-        bufferedReader.close();
+//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+//
+//        int n = Integer.parseInt(bufferedReader.readLine().trim());
+//
+//        List<String> words = new ArrayList<>();
+//
+//        for (int i = 0; i < n; i++) {
+//            String wordsItem = bufferedReader.readLine();
+//            words.add(wordsItem);
+//        }
+//
+//        Result.noPrefix(words);
+//
+//        bufferedReader.close();
 
 
         // Test Decode D7()####################
@@ -710,7 +729,7 @@ public class Solution {
             A.add(AItem);
         }
 
-        int result = Result.cookies(k, A);
+        int result = Result.cookiesVer2(k, A);
 
         bufferedWriter.write(String.valueOf(result));
         bufferedWriter.newLine();
