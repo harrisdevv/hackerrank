@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import javax.swing.plaf.IconUIResource;
+
 class Result2 {
 
 	/*
@@ -464,19 +466,38 @@ class Result2 {
 			A.add(number.get(i));
 		}
 		int ithPrime = 0;
+		boolean rev = true;
 		while (q-- > 0) {
-			for (int i = 0; i < A.size(); i++) {
-				if (A.get(i) % generatePrime.get(ithPrime) == 0) {
-					res.add(A.get(i));
-					A.remove(i);
-					i--;
+			if (rev) {
+				for (int i = 0; i < A.size(); i++) {
+					if (A.get(i) % generatePrime.get(ithPrime) == 0) {
+						res.add(A.get(i));
+						A.remove(i);
+						i--;
+					}
+				}
+			} else {
+				for (int i = A.size() - 1; i >= 0; i--) {
+					if (A.get(i) % generatePrime.get(ithPrime) == 0) {
+						res.add(A.get(i));
+						A.remove(i);
+						i++;
+					}
 				}
 			}
 			ithPrime++;
-			Collections.reverse(A);
+			rev = !rev;
+//			Collections.reverse(A);
 		}
-		for (int i = A.size() - 1; i >= 0; i--) {
-			res.add(A.get(i));
+		if (rev) {
+			for (int i = A.size() - 1; i >= 0; i--) {
+				res.add(A.get(i));
+			}
+		}
+		else {
+			for (int i = 0; i < A.size(); i++) {
+				res.add(A.get(i));
+			}
 		}
 		return res;
 	}
@@ -566,27 +587,20 @@ public class MonthHackerrank {
 
 		String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
 
-        int n = Integer.parseInt(firstMultipleInput[0]);
+		int n = Integer.parseInt(firstMultipleInput[0]);
 
-        int q = Integer.parseInt(firstMultipleInput[1]);
+		int q = Integer.parseInt(firstMultipleInput[1]);
 
-        List<Integer> number = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-            .map(Integer::parseInt)
-            .collect(toList());
+		List<Integer> number = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+				.map(Integer::parseInt).collect(toList());
 
-        List<Integer> result = Result2.waiter(number, q);
+		List<Integer> result = Result2.waiter(number, q);
 
-        bufferedWriter.write(
-            result.stream()
-                .map(Object::toString)
-                .collect(joining("\n"))
-            + "\n"
-        );
+		bufferedWriter.write(result.stream().map(Object::toString).collect(joining("\n")) + "\n");
 
-        bufferedReader.close();
-        bufferedWriter.close();
-        
-        
+		bufferedReader.close();
+		bufferedWriter.close();
+
 //		PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
 //		try (Scanner scan = new Scanner(System.in)) {
 //			int q = scan.nextInt();
