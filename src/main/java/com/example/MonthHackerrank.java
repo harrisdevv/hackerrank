@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Stream;
 
 import javax.swing.plaf.IconUIResource;
@@ -570,6 +571,28 @@ class Result2 {
 		result.add(max_so_far < 0 ? max_so_far : maxSum);
 		return result;
 	}
+	
+	/*
+     * Complete the 'flippingMatrix' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts 2D_INTEGER_ARRAY matrix as parameter.
+     */
+    public static int flippingMatrix(List<List<Integer>> matrix) {
+        int maxSum = 0;
+        int qsize = matrix.size()/2;
+        for (int row = 0; row < qsize; row++) {
+            for (int col = 0; col < qsize; col++) {
+                int s1 = matrix.get(row).get(2 * qsize - col-1);
+                int s2 = matrix.get(row).get(col);
+                int s3 = matrix.get(2 * qsize -row-1).get(col);
+                int s4 = matrix.get(2*qsize-row-1).get(2*qsize - col- 1);
+                int highestValue = Math.max(s1, Math.max(s2, Math.max(s3,s4)));
+                maxSum += highestValue;
+            }
+        }
+        return maxSum;
+    }
 }
 
 public class MonthHackerrank {
@@ -581,6 +604,7 @@ public class MonthHackerrank {
 		// FileReader("input.txt"));
 		// BufferedWriter bufferedWriter = new BufferedWriter(new
 		// FileWriter("test.txt"));
+		Stack<Integer> stack = new Stack<Integer>();
 
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
