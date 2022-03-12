@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+import java.util.spi.LocaleNameProvider;
 import java.util.stream.Stream;
 
 import javax.swing.plaf.IconUIResource;
@@ -592,6 +593,35 @@ class Result2 {
             }
         }
         return maxSum;
+    }
+    
+    public static int findDifPalind(String s) {
+    	int len = s.length();
+    	for (int i = 0; i < len/2; i++) {
+    		if(s.charAt(i) == s.charAt(len - i - 1)) {
+    			return i;
+    		}
+    	}
+    	return -1;
+    }
+    
+    public static int removeOneIndexToPalindrome(String s) {
+    	int idxDiff = findDifPalind(s);
+    	if (idxDiff == -1) {
+    		return -1;
+    	}
+    	StringBuilder sb = new StringBuilder(s);
+    	sb.deleteCharAt(idxDiff);
+    	if (findDifPalind(sb.toString()) == -1) {
+    		return idxDiff;
+    	}
+    	
+    	sb = new StringBuilder(s);
+    	sb.deleteCharAt(s.length() - idxDiff - 1);
+    	if (findDifPalind(sb.toString()) == -1) {
+    		return s.length() - idxDiff - 1;
+    	}
+    	return -1;
     }
 }
 
