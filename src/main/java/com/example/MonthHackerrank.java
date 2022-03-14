@@ -495,8 +495,7 @@ class Result2 {
 			for (int i = A.size() - 1; i >= 0; i--) {
 				res.add(A.get(i));
 			}
-		}
-		else {
+		} else {
 			for (int i = 0; i < A.size(); i++) {
 				res.add(A.get(i));
 			}
@@ -572,57 +571,140 @@ class Result2 {
 		result.add(max_so_far < 0 ? max_so_far : maxSum);
 		return result;
 	}
-	
+
 	/*
-     * Complete the 'flippingMatrix' function below.
-     *
-     * The function is expected to return an INTEGER.
-     * The function accepts 2D_INTEGER_ARRAY matrix as parameter.
-     */
-    public static int flippingMatrix(List<List<Integer>> matrix) {
-        int maxSum = 0;
-        int qsize = matrix.size()/2;
-        for (int row = 0; row < qsize; row++) {
-            for (int col = 0; col < qsize; col++) {
-                int s1 = matrix.get(row).get(2 * qsize - col-1);
-                int s2 = matrix.get(row).get(col);
-                int s3 = matrix.get(2 * qsize -row-1).get(col);
-                int s4 = matrix.get(2*qsize-row-1).get(2*qsize - col- 1);
-                int highestValue = Math.max(s1, Math.max(s2, Math.max(s3,s4)));
-                maxSum += highestValue;
-            }
-        }
-        return maxSum;
-    }
-    
-    public static int findDifPalind(String s) {
-    	int len = s.length();
-    	for (int i = 0; i < len/2; i++) {
-    		if(s.charAt(i) == s.charAt(len - i - 1)) {
-    			return i;
-    		}
-    	}
-    	return -1;
-    }
-    
-    public static int removeOneIndexToPalindrome(String s) {
-    	int idxDiff = findDifPalind(s);
-    	if (idxDiff == -1) {
-    		return -1;
-    	}
-    	StringBuilder sb = new StringBuilder(s);
-    	sb.deleteCharAt(idxDiff);
-    	if (findDifPalind(sb.toString()) == -1) {
-    		return idxDiff;
-    	}
-    	
-    	sb = new StringBuilder(s);
-    	sb.deleteCharAt(s.length() - idxDiff - 1);
-    	if (findDifPalind(sb.toString()) == -1) {
-    		return s.length() - idxDiff - 1;
-    	}
-    	return -1;
-    }
+	 * Complete the 'flippingMatrix' function below.
+	 *
+	 * The function is expected to return an INTEGER. The function accepts
+	 * 2D_INTEGER_ARRAY matrix as parameter.
+	 */
+	public static int flippingMatrix(List<List<Integer>> matrix) {
+		int maxSum = 0;
+		int qsize = matrix.size() / 2;
+		for (int row = 0; row < qsize; row++) {
+			for (int col = 0; col < qsize; col++) {
+				int s1 = matrix.get(row).get(2 * qsize - col - 1);
+				int s2 = matrix.get(row).get(col);
+				int s3 = matrix.get(2 * qsize - row - 1).get(col);
+				int s4 = matrix.get(2 * qsize - row - 1).get(2 * qsize - col - 1);
+				int highestValue = Math.max(s1, Math.max(s2, Math.max(s3, s4)));
+				maxSum += highestValue;
+			}
+		}
+		return maxSum;
+	}
+
+	public static int findDifPalind(String s) {
+		int len = s.length();
+		for (int i = 0; i < len / 2; i++) {
+			if (s.charAt(i) != s.charAt(len - i - 1)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int removeOneIndexToPalindrome(String s) {
+		int idxDiff = findDifPalind(s);
+		if (idxDiff == -1) {
+			return -1;
+		}
+		StringBuilder sb = new StringBuilder(s);
+		sb.deleteCharAt(idxDiff);
+		if (findDifPalind(sb.toString()) == -1) {
+			return idxDiff;
+		}
+
+		sb = new StringBuilder(s);
+		sb.deleteCharAt(s.length() - idxDiff - 1);
+		if (findDifPalind(sb.toString()) == -1) {
+			return s.length() - idxDiff - 1;
+		}
+		return -1;
+	}
+
+	/**
+	 * Complete the 'truckTour' function below.** The function is expected to return
+	 * an INTEGER.* The function accepts 2D_INTEGER_ARRAY petrolpumps as parameter.
+	 */
+	public static int truckTour(List<List<Integer>> petrolpumps) {
+		int nPetrol = petrolpumps.size();
+		int j, k, sum;
+		boolean foundSol;
+		for (int i = 0; i < nPetrol; i++) {
+			foundSol = true;
+			j = i;
+			k = 0;
+			sum = 0;
+			while (k < nPetrol) {
+				int idxPetrol = j % nPetrol;
+				sum += petrolpumps.get(idxPetrol).get(0) - petrolpumps.get(idxPetrol).get(1);
+				if (sum < 0) {
+					foundSol = false;
+					break;
+				}
+				j++;
+				k++;
+			}
+			if (foundSol)
+				return i;
+		}
+		return -1;
+	}
+
+	public static int anagram(String s) {
+		int lenS = s.length();
+		if (lenS % 2 == 1) {
+			return -1;
+		}
+		int[] freq = new int[26];
+		for (int i = 0; i < lenS / 2; i++) {
+			freq[s.charAt(i) - 'a']++;
+		}
+		for (int i = lenS / 2; i < lenS; i++) {
+			freq[s.charAt(i) - 'a']--;
+		}
+		int count = 0;
+		for (int i = 0; i < 26; i++) {
+			if (freq[i] != 0) {
+				count += Math.abs(freq[i]);
+			}
+		}
+		return count / 2;
+	}
+
+	public static int findGCD(int a, int b) {
+		while (b > 0) {
+			int temp = b;
+			b = a % b;
+			a = temp;
+		}
+		return a;
+	}
+
+	public static int findLCM(int a, int b) {
+		return (a / findGCD(a, b)) * b;
+	}
+
+	public static int getTotalX(List<Integer> a, List<Integer> b) {
+		int lenA = a.size();
+		int lenB = b.size();
+		int gcdOfB = b.get(0);
+		for (int i = 1; i < lenB; i++) {
+			gcdOfB = findGCD(gcdOfB, b.get(i));
+		}
+		int lmOfA = a.get(0);
+		for (int i = 1; i < lenA; i++) {
+			lmOfA = findLCM(lmOfA, a.get(i));
+		}
+		int count = 0;
+		for (int i = lmOfA, div = 2; i <= gcdOfB; i = lmOfA * div, div++) {
+			if (gcdOfB % i == 0) {
+				count++;
+			}
+		}
+		return count;
+	}
 }
 
 public class MonthHackerrank {
