@@ -705,6 +705,19 @@ class Result2 {
 		}
 		return count;
 	}
+
+	public static int pairs(int k, List<Integer> arr) {
+		Collections.sort(arr);
+		int count = 0;
+		for (int i = 0; i < arr.size(); i++) {
+			int x1 = arr.get(i) - k;
+			int i1 = Collections.binarySearch(arr, x1);
+			if (i1 >= 0 && i1 != i) {
+				count++;
+			}
+		}
+		return count;
+	}
 }
 
 public class MonthHackerrank {
