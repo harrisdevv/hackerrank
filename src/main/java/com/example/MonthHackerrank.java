@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 import java.util.spi.LocaleNameProvider;
@@ -718,19 +719,47 @@ class Result2 {
 		}
 		return count;
 	}
+
+	public static List<String> bigSorting(List<String> arr) {
+		Collections.sort(arr, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				if (o1.length() < o2.length()) {
+					return -1;
+				}
+				if (o1.length() > o2.length()) {
+					return 1;
+				}
+				return o1.compareTo(o2);
+			}
+		});
+		return arr;
+	}
+
+	public static int hackerlandRadioTransmitters(List<Integer> x, int k) {
+		Collections.sort(x);
+		int countTransmitter = 0;
+		int i = 0;
+		int sz = x.size();
+		while (i < sz) {
+			countTransmitter++;
+			int cover = x.get(i) + k;
+			while (i < sz && x.get(i) <= cover) {
+				i++;
+			}
+			cover = x.get(i - 1) + k;
+			while (i < sz && x.get(i) <= cover) {
+				i++;
+			}
+		}
+		return countTransmitter;
+	}
+
 }
 
 public class MonthHackerrank {
 
 	public static void main(String[] args) throws IOException {
-		// BufferedReader bufferedReader = new BufferedReader(new
-		// InputStreamReader(System.in));
-		// BufferedReader bufferedReader = new BufferedReader(new
-		// FileReader("input.txt"));
-		// BufferedWriter bufferedWriter = new BufferedWriter(new
-		// FileWriter("test.txt"));
-		Stack<Integer> stack = new Stack<Integer>();
-
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
 
@@ -738,34 +767,18 @@ public class MonthHackerrank {
 
 		int n = Integer.parseInt(firstMultipleInput[0]);
 
-		int q = Integer.parseInt(firstMultipleInput[1]);
+		int k = Integer.parseInt(firstMultipleInput[1]);
 
-		List<Integer> number = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-				.map(Integer::parseInt).collect(toList());
+		List<Integer> x = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" ")).map(Integer::parseInt)
+				.collect(toList());
 
-		List<Integer> result = Result2.waiter(number, q);
+		int result = Result2.hackerlandRadioTransmitters(x, k);
 
-		bufferedWriter.write(result.stream().map(Object::toString).collect(joining("\n")) + "\n");
+		bufferedWriter.write(String.valueOf(result));
+		bufferedWriter.newLine();
 
 		bufferedReader.close();
 		bufferedWriter.close();
-
-//		PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
-//		try (Scanner scan = new Scanner(System.in)) {
-//			int q = scan.nextInt();
-//			for (int i = 0; i < q; i++) {
-//				int opt = scan.nextInt();
-//				if (opt == 1) {
-//					int val = scan.nextInt();
-//					minHeap.add(val);
-//				} else if (opt == 2) {
-//					int val = scan.nextInt();
-//					minHeap.remove(val);
-//				} else if (opt == 3) {
-//					System.out.println(minHeap.peek());
-//				}
-//			}
-//		}
 
 	}
 }
