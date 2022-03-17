@@ -755,6 +755,60 @@ class Result2 {
 		return countTransmitter;
 	}
 
+	public static List<Integer> bfs(int n, int m, List<List<Integer>> edges, int s) {
+        final int WEIGH = 6;
+        List<Integer> res = new ArrayList<Integer>();
+        
+        boolean visited[] = new boolean[1002];
+        for (int i = 1; i <= n; i++) {
+            visited[i] = false;
+        } 
+        
+//        Queue<Integer> queue = new Queue<>();
+//        queue.add()
+        
+        return res;
+    }
+
+	static final long MOD = 1000000007;
+
+	public static void lego(int width, int height) {
+		int[] s = new int[1001];
+		int[] pows = new int[width + 1];
+		for (int i = 0; i <= width; i++) {
+			pows[i] = powmod(s[i], height);
+		}
+		int[] constr = new int[width + 1];
+		constr[1] = 1;
+		for (int i = 2; i <= width; i++) {
+			constr[i] = pows[i];
+			for (int j = 1; j < i; j++) {
+				constr[i] = subMod(constr[i], mulMod(constr[j], pows[i - j]));
+			}
+		}
+		System.out.println(constr[width]);
+	}
+
+	public static int mulMod(int a, int b) {
+		return (int) (((long) a * b) % MOD);
+	}
+
+	public static int subMod(int a, int b) {
+		return (int) (((long) a + MOD - b) % MOD);
+	}
+
+	public static int powmod(int a, int b) {
+		long res = 1;
+		long base = a % MOD;
+		while (b != 0) {
+			if (b % 2 == 1) {
+				res = (res * base) % MOD;
+			}
+			base = (base * base) % MOD;
+			b >>= 1;
+		}
+		return (int) (res % MOD);
+	}
 }
 
 public class MonthHackerrank {
