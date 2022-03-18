@@ -756,23 +756,23 @@ class Result2 {
 	}
 
 	public static List<Integer> bfs(int n, int m, List<List<Integer>> edges, int s) {
-        final int WEIGH = 6;
-        List<Integer> res = new ArrayList<Integer>();
-        
-        boolean visited[] = new boolean[1002];
-        for (int i = 1; i <= n; i++) {
-            visited[i] = false;
-        } 
-        
+		final int WEIGH = 6;
+		List<Integer> res = new ArrayList<Integer>();
+
+		boolean visited[] = new boolean[1002];
+		for (int i = 1; i <= n; i++) {
+			visited[i] = false;
+		}
+
 //        Queue<Integer> queue = new Queue<>();
 //        queue.add()
-        
-        return res;
-    }
+
+		return res;
+	}
 
 	static final long MOD = 1000000007;
 
-	public static void lego(int width, int height) {
+	public static int lego(int width, int height) {
 		int[] s = new int[1001];
 		int[] pows = new int[width + 1];
 		for (int i = 0; i <= width; i++) {
@@ -786,7 +786,7 @@ class Result2 {
 				constr[i] = subMod(constr[i], mulMod(constr[j], pows[i - j]));
 			}
 		}
-		System.out.println(constr[width]);
+		return constr[width];
 	}
 
 	public static int mulMod(int a, int b) {
@@ -808,6 +808,48 @@ class Result2 {
 			b >>= 1;
 		}
 		return (int) (res % MOD);
+	}
+
+	static String maximumValuePalindUsingKChanges(String str, int k) {
+		char palind[] = str.toCharArray();
+		int left = 0;
+		int right = str.length() - 1;
+		while (left < right) {
+			if (str.charAt(left) != str.charAt(right)) {
+				palind[left] = palind[right] = (char) Math.max(str.charAt(left), str.charAt(right));
+				k--;
+			}
+			left++;
+			right--;
+		}
+		if (k < 0) {
+			return "Not possible";
+		}
+		left = 0;
+		right = str.length() - 1;
+		while (left <= right) {
+			if (left == right) {
+				if (k > 0) {
+					palind[left] = '9';
+				}
+			}
+			if (palind[left] < '9') {
+				if (k >= 2 && palind[left] == str.charAt(left) && palind[right] == str.charAt(right)) {
+					k -= 2;
+					palind[left] = palind[right] = '9';
+				}
+				else if (k >= 1 && (palind[left] != str.charAt(left) || palind[right] != str.charAt(right))) {
+					k--;
+					palind[left] = palind[right] = '9';
+				}
+			}
+			left++;
+			right--;
+		}
+		StringBuilder res = new StringBuilder();
+		for (int i = 0; i < palind.length; i++)
+			res.append(palind[i]);
+		return res.toString();
 	}
 }
 
