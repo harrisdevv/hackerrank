@@ -888,6 +888,29 @@ class Result2 {
 		return res;
 	}
 
+	// fail with test 4 3 4 2 5 1
+	public static int lilysHomework(List<Integer> arr) {
+		List<Integer> sortedArr = new ArrayList<Integer>(arr);
+		Collections.sort(sortedArr);
+		int count = 0;
+		for (int i = 0; i < sortedArr.size(); i++) {
+			if (arr.get(i) != sortedArr.get(i)) {
+				count++;
+				int idx = -1; 
+				for (int j = i + 1; j< arr.size(); j++) {
+					if (arr.get(j) == sortedArr.get(i)) {
+						idx = j;
+						break;
+					}
+				}
+//				System.out.println(idx + " " +sortedArr.get(i) + " in " + Arrays.toString(arr.toArray()));
+				int temp = arr.get(i);
+				arr.set(i, arr.get(idx));
+				arr.set(idx, temp);
+			}
+		}
+		return count;
+    }
 }
 
 public class MonthHackerrank {
@@ -896,22 +919,20 @@ public class MonthHackerrank {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
 
-		String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+		
+		int n = Integer.parseInt(bufferedReader.readLine().trim());
 
-		int n = Integer.parseInt(firstMultipleInput[0]);
+        List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+            .map(Integer::parseInt)
+            .collect(toList());
 
-		int k = Integer.parseInt(firstMultipleInput[1]);
+        int result = Result2.lilysHomework(arr);
 
-		List<Integer> x = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" ")).map(Integer::parseInt)
-				.collect(toList());
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
 
-		int result = Result2.hackerlandRadioTransmitters(x, k);
-
-		bufferedWriter.write(String.valueOf(result));
-		bufferedWriter.newLine();
-
-		bufferedReader.close();
-		bufferedWriter.close();
-
+        bufferedReader.close();
+        bufferedWriter.close();
+        
 	}
 }
