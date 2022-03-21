@@ -8,10 +8,13 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 import java.util.spi.LocaleNameProvider;
@@ -837,8 +840,7 @@ class Result2 {
 				if (k >= 2 && palind[left] == str.charAt(left) && palind[right] == str.charAt(right)) {
 					k -= 2;
 					palind[left] = palind[right] = '9';
-				}
-				else if (k >= 1 && (palind[left] != str.charAt(left) || palind[right] != str.charAt(right))) {
+				} else if (k >= 1 && (palind[left] != str.charAt(left) || palind[right] != str.charAt(right))) {
 					k--;
 					palind[left] = palind[right] = '9';
 				}
@@ -851,6 +853,41 @@ class Result2 {
 			res.append(palind[i]);
 		return res.toString();
 	}
+	
+ // ? https://www.hackerrank.com/challenges/one-month-preparation-kit-queries-with-fixed-length/problem?h_l=interview&isFullScreen=true&playlist_slugs%5B%5D%5B%5D=preparation-kits&playlist_slugs%5B%5D%5B%5D=one-month-preparation-kit&playlist_slugs%5B%5D%5B%5D=one-month-week-four
+	public static int minMax(List<Integer>ar , int d) {
+		Deque<Integer> deque = new ArrayDeque<>(d);
+		for (int i = 0; i < d; i++) {
+			addElement(deque, ar.get(i));
+		}
+		int min = deque.peekFirst();
+		for (int i = d; i < ar.size(); i++) {
+			if (ar.get(i - d) == deque.peekFirst())
+				deque.removeFirst();
+			addElement(deque, ar.get(i));
+			int max = deque.peekFirst();
+			if (max < min)
+				min = max;
+		}
+
+		return min;
+	}
+
+	private static void addElement(Deque<Integer> deque, int newEl) {
+		while (!deque.isEmpty() && deque.peekLast() < newEl) {
+			deque.removeLast();
+		}
+		deque.offerLast(newEl);
+	}
+
+	public static List<Integer> solve(List<Integer> arr, List<Integer> queries) {
+		List<Integer> res = new ArrayList<>();
+		for (int i = 0; i < queries.size(); i++) {
+			res.add(minMax(arr, queries.get(i)));
+		}
+		return res;
+	}
+
 }
 
 public class MonthHackerrank {
