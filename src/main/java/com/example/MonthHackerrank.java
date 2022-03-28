@@ -1,6 +1,5 @@
 package com.example;
 
-import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 import java.io.BufferedReader;
@@ -14,13 +13,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
-import java.util.spi.LocaleNameProvider;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
-import javax.swing.plaf.IconUIResource;
+import com.example.Result2.TrieNode;
 
 class Result2 {
 
@@ -853,9 +850,10 @@ class Result2 {
 			res.append(palind[i]);
 		return res.toString();
 	}
-	
- // ? https://www.hackerrank.com/challenges/one-month-preparation-kit-queries-with-fixed-length/problem?h_l=interview&isFullScreen=true&playlist_slugs%5B%5D%5B%5D=preparation-kits&playlist_slugs%5B%5D%5B%5D=one-month-preparation-kit&playlist_slugs%5B%5D%5B%5D=one-month-week-four
-	public static int minMax(List<Integer>ar , int d) {
+
+	// ?
+	// https://www.hackerrank.com/challenges/one-month-preparation-kit-queries-with-fixed-length/problem?h_l=interview&isFullScreen=true&playlist_slugs%5B%5D%5B%5D=preparation-kits&playlist_slugs%5B%5D%5B%5D=one-month-preparation-kit&playlist_slugs%5B%5D%5B%5D=one-month-week-four
+	public static int minMax(List<Integer> ar, int d) {
 		Deque<Integer> deque = new ArrayDeque<>(d);
 		for (int i = 0; i < d; i++) {
 			addElement(deque, ar.get(i));
@@ -896,8 +894,8 @@ class Result2 {
 		for (int i = 0; i < sortedArr.size(); i++) {
 			if (arr.get(i) != sortedArr.get(i)) {
 				count++;
-				int idx = -1; 
-				for (int j = i + 1; j< arr.size(); j++) {
+				int idx = -1;
+				for (int j = i + 1; j < arr.size(); j++) {
 					if (arr.get(j) == sortedArr.get(i)) {
 						idx = j;
 						break;
@@ -910,29 +908,70 @@ class Result2 {
 			}
 		}
 		return count;
-    }
+	}
+
+	static class TrieNode {
+
+		char ch;
+		int count;
+		TrieNode[] children;
+		boolean isCompleted = false;
+
+		TrieNode(char ch) {
+			this.ch = ch;
+			children = new TrieNode[12];
+		}
+	}
+
+	public static boolean addNode(TrieNode root, String in) {
+		TrieNode curNode = root;
+		for (int i = 0; i < in.length(); i++) {
+			char c = in.charAt(i);
+			int index = c - 'a';
+			if (curNode.children[index] == null)
+				curNode.children[index] = new TrieNode(c);
+			if (curNode.isCompleted)
+				return false;
+			curNode.count++;
+			curNode = curNode.children[index];
+		}
+		curNode.isCompleted = true;
+		return ++curNode.count <= 1;
+	}
 }
 
 public class MonthHackerrank {
 
 	public static void main(String[] args) throws IOException {
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
-
+//		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+//		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
+//
+//		int n = Integer.parseInt(bufferedReader.readLine().trim());
+//
+//		List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+//				.map(Integer::parseInt).collect(toList());
+//
+//		int result = Result2.lilysHomework(arr);
+//
+//		bufferedWriter.write(String.valueOf(result));
+//		bufferedWriter.newLine();
+//
+//		bufferedReader.close();
+//		bufferedWriter.close();
 		
-		int n = Integer.parseInt(bufferedReader.readLine().trim());
-
-        List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-            .map(Integer::parseInt)
-            .collect(toList());
-
-        int result = Result2.lilysHomework(arr);
-
-        bufferedWriter.write(String.valueOf(result));
-        bufferedWriter.newLine();
-
-        bufferedReader.close();
-        bufferedWriter.close();
-        
+		boolean found = false;
+	    TrieNode root = new TrieNode(' ');
+	    Scanner sc = new Scanner(System.in);
+	    int n = sc.nextInt();
+	    for (int i = 0; i < n; i++) {
+	      String str = sc.next();
+	      if (!Result2.addNode(root, str)) {
+	        System.out.println("BAD SET \n" + str);
+	        found = true;
+	        break;
+	      }
+	    }
+	    System.out.println(!found ? "GOOD SET" : "");
+	    sc.close();
 	}
 }
