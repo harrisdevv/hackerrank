@@ -942,6 +942,23 @@ class Result2 {
 
 public class MonthHackerrank {
 
+	private static void testTriePrefixSet() {
+		boolean found = false;
+	    TrieNode root = new TrieNode(' ');
+	    Scanner sc = new Scanner(System.in);
+	    int n = sc.nextInt();
+	    for (int i = 0; i < n; i++) {
+	      String str = sc.next();
+	      if (!Result2.addNode(root, str)) {
+	        System.out.println("BAD SET \n" + str);
+	        found = true;
+	        break;
+	      }
+	    }
+	    System.out.println(!found ? "GOOD SET" : "");
+	    sc.close();
+	}
+
 	public static void main(String[] args) throws IOException {
 //		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 //		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
@@ -959,19 +976,7 @@ public class MonthHackerrank {
 //		bufferedReader.close();
 //		bufferedWriter.close();
 		
-		boolean found = false;
-	    TrieNode root = new TrieNode(' ');
-	    Scanner sc = new Scanner(System.in);
-	    int n = sc.nextInt();
-	    for (int i = 0; i < n; i++) {
-	      String str = sc.next();
-	      if (!Result2.addNode(root, str)) {
-	        System.out.println("BAD SET \n" + str);
-	        found = true;
-	        break;
-	      }
-	    }
-	    System.out.println(!found ? "GOOD SET" : "");
-	    sc.close();
+		testTriePrefixSet();
 	}
+
 }
