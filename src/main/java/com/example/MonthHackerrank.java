@@ -938,25 +938,82 @@ class Result2 {
 		curNode.isCompleted = true;
 		return ++curNode.count <= 1;
 	}
+
+	private static int[][] tickTheFill(int[][] in) {
+		int[][] out = new int[in.length][];
+		for (int i = 0; i < in.length; i++) {
+			out[i] = new int[in[i].length];
+			for (int j = 0; j < in[i].length; j++) {
+				if (in[i][j] == 1) {
+					throw new RuntimeException("Bomb on a fill!!");
+				} else {
+					out[i][j] = in[i][j] == 0 ? 3 : (in[i][j] - 1);
+				}
+			}
+		}
+		return out;
+	}
+
+	private static int[][] tick(int[][] in) {
+		int[][] out = new int[in.length][];
+		for (int i = 0; i < in.length; i++) {
+			out[i] = in[i].clone();
+			for (int j = 0; j < in[i].length; j++) {
+				if (out[i][j] > 0) {
+					out[i][j]--;
+				}
+			}
+		}
+		for (int i = 0; i < in.length; i++) {
+			for (int j = 0; j < in[i].length; j++) {
+				if (in[i][j] == 1) {
+					if (i > 0) {
+						out[i - 1][j] = 0;
+					}
+					if (i < in.length - 1) {
+						out[i + 1][j] = 0;
+					}
+					if (j > 0) {
+						out[i][j - 1] = 0;
+					}
+					if (j < in[i].length - 1) {
+						out[i][j + 1] = 0;
+					}
+				}
+			}
+		}
+		return out;
+	}
+
+	public static void printTick(int[][] bs) {
+		for (int i = 0; i < bs.length; i++) {
+			StringBuilder sb = new StringBuilder();
+			for (int j = 0; j < bs[i].length; j++) {
+				sb.append(bs[i][j] > 0 ? 'O' : '.');
+			}
+			System.out.println(sb);
+		}
+	}
+
 }
 
 public class MonthHackerrank {
 
 	private static void testTriePrefixSet() {
 		boolean found = false;
-	    TrieNode root = new TrieNode(' ');
-	    Scanner sc = new Scanner(System.in);
-	    int n = sc.nextInt();
-	    for (int i = 0; i < n; i++) {
-	      String str = sc.next();
-	      if (!Result2.addNode(root, str)) {
-	        System.out.println("BAD SET \n" + str);
-	        found = true;
-	        break;
-	      }
-	    }
-	    System.out.println(!found ? "GOOD SET" : "");
-	    sc.close();
+		TrieNode root = new TrieNode(' ');
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		for (int i = 0; i < n; i++) {
+			String str = sc.next();
+			if (!Result2.addNode(root, str)) {
+				System.out.println("BAD SET \n" + str);
+				found = true;
+				break;
+			}
+		}
+		System.out.println(!found ? "GOOD SET" : "");
+		sc.close();
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -975,7 +1032,7 @@ public class MonthHackerrank {
 //
 //		bufferedReader.close();
 //		bufferedWriter.close();
-		
+
 		testTriePrefixSet();
 	}
 
