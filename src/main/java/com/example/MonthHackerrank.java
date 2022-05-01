@@ -1,22 +1,18 @@
 package com.example;
 
-import static java.util.stream.Collectors.toList;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
+import com.example.Result2.Trie;
 import com.example.Result2.TrieNode;
 
 class Result2 {
@@ -954,35 +950,35 @@ class Result2 {
 		return out;
 	}
 
-	private static int[][] tick(int[][] in) {
-		int[][] out = new int[in.length][];
-		for (int i = 0; i < in.length; i++) {
-			out[i] = in[i].clone();
-			for (int j = 0; j < in[i].length; j++) {
-				if (out[i][j] > 0) {
-					out[i][j]--;
+	private static int[][] tick(int[][] input) {
+		int[][] output = new int[input.length][];
+		for (int i = 0; i < input.length; i++) {
+			output[i] = input[i].clone();
+			for (int j = 0; j < input[i].length; j++) {
+				if (output[i][j] > 0) {
+					output[i][j]--;
 				}
 			}
 		}
-		for (int i = 0; i < in.length; i++) {
-			for (int j = 0; j < in[i].length; j++) {
-				if (in[i][j] == 1) {
+		for (int i = 0; i < input.length; i++) {
+			for (int j = 0; j < input[i].length; j++) {
+				if (input[i][j] == 1) {
 					if (i > 0) {
-						out[i - 1][j] = 0;
+						output[i - 1][j] = 0;
 					}
-					if (i < in.length - 1) {
-						out[i + 1][j] = 0;
+					if (i < input.length - 1) {
+						output[i + 1][j] = 0;
 					}
 					if (j > 0) {
-						out[i][j - 1] = 0;
+						output[i][j - 1] = 0;
 					}
-					if (j < in[i].length - 1) {
-						out[i][j + 1] = 0;
+					if (j < input[i].length - 1) {
+						output[i][j + 1] = 0;
 					}
 				}
 			}
 		}
-		return out;
+		return output;
 	}
 
 	public static void printTick(int[][] bs) {
@@ -995,6 +991,52 @@ class Result2 {
 		}
 	}
 
+	class TrieNodeV2 {
+		public char c;
+		public TrieNodeV2 parent = null;
+		public boolean isEndWordNode = false;
+		public HashMap<Character, TrieNodeV2> children = new HashMap<Character, TrieNodeV2>();
+
+		public TrieNodeV2(char c, TrieNodeV2 parent) {
+			this.c = c;
+			this.parent = parent;
+		}
+
+		public TrieNodeV2(char c, TrieNodeV2 parent, boolean isEndWordNode) {
+			this.c = c;
+			this.isEndWordNode = isEndWordNode;
+			this.parent = parent;
+		}
+	}
+
+	public class TrieV2 {
+		public TrieNodeV2 root = new TrieNodeV2(' ', null);
+
+		public String add(String word) {
+			TrieNodeV2 r = root;
+			int i = 0;
+			while (i < word.length()) {
+				if (!r.children.containsKey(word.charAt(i))) {
+					r.children.put(word.charAt(i), new TrieNodeV2(word.charAt(i), r));
+					r = r.children.get(word.charAt(i));
+				} else {
+					r = r.children.get(word.charAt(i));
+					if (r.isEndWordNode) {
+						return word;
+					}
+				}
+				i++;
+			}
+
+			if (r.children.size() > 0) {
+				return word;
+			}
+
+			r.isEndWordNode = true;
+
+			return "";
+		}
+	}
 }
 
 public class MonthHackerrank {
@@ -1014,6 +1056,26 @@ public class MonthHackerrank {
 		}
 		System.out.println(!found ? "GOOD SET" : "");
 		sc.close();
+	}
+
+	public static void testTrieNodeV2_NoPrefixSet() {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		String invalid = "";
+		com.example.Result2.TrieV2 root = new com.example.Result2.TrieV2();
+		for (int i = 0; i < n; i++) {
+			invalid = root.add(sc.next());
+			if (invalid != "") {
+				break;
+			}
+		}
+
+		if (invalid != "") {
+			System.out.println("BAD SET");
+			System.out.println(invalid);
+		} else {
+			System.out.println("GOOD SET");
+		}
 	}
 
 	public static void main(String[] args) throws IOException {
